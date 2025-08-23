@@ -9,7 +9,7 @@ const Login: React.FC = () => {
   const [password, setPassword] = useState('');
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { token ,loading} = useSelector((state: any) => state.auth);
+  const {loading} = useSelector((state: any) => state.auth);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

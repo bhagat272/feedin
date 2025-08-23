@@ -70,7 +70,7 @@ const authSlice = createSlice({
       state.loading = true;
       state.error = null;
     });
-    builder.addCase(register.fulfilled, (state, action) => {
+    builder.addCase(register.fulfilled, (state) => {
       state.loading = false;
       // No user or token from register, handle as needed
     });

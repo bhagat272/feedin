@@ -17,7 +17,11 @@ const CreateForm: React.FC = () => {
 
   const updateQuestion = (index: number, field: keyof { type: string; text: string; options: string[] }, value: string) => {
     const newQuestions = [...questions];
-    newQuestions[index][field] = value;
+if (field === "options") {
+  newQuestions[index][field] = value.split(","); // convert to string[]
+} else {
+  newQuestions[index][field] = value; // normal string
+}
     setQuestions(newQuestions);
   };
 
