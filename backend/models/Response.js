@@ -1,13 +1,15 @@
+// models/Response.js
 const mongoose = require('mongoose');
-
-const answerSchema = new mongoose.Schema({
-  answer: String,
-  questionIndex: Number,
-});
 
 const responseSchema = new mongoose.Schema({
   form: { type: mongoose.Schema.Types.ObjectId, ref: 'Form', required: true },
-  answers: [answerSchema],
+  user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+  answers: [
+    {
+      questionId: { type: mongoose.Schema.Types.ObjectId, ref: 'Form.questions._id', required: true },
+      answer: { type: String, required: true },
+    },
+  ],
   submittedAt: { type: Date, default: Date.now },
 });
 

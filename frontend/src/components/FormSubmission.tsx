@@ -1,8 +1,9 @@
+// FormSubmission.tsx
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
- 
+
 const FormSubmission: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const [form, setForm] = useState<any | null>(null);
@@ -11,10 +12,14 @@ const FormSubmission: React.FC = () => {
 
   useEffect(() => {
     const fetchForm = async () => {
-      const res = await axios.get(`/api/forms/${id}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      setForm(res.data);
+      try {
+        const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/forms/${id}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        setForm(res.data);
+      } catch (err) {
+        console.error('Error fetching form:', err);
+      }
     };
     fetchForm();
   }, [id, token]);
@@ -30,12 +35,15 @@ const FormSubmission: React.FC = () => {
       return;
     }
     try {
-      await axios.post(`/api/responses/${id}`, { answers: Object.keys(answers).map(key => ({ questionId: key, answer: answers[key] })) }, {
+      await axios.post(`${import.meta.env.VITE_API_URL}/api/responses/${id}`, {
+        answers: Object.keys(answers).map((key) => ({ questionId: key, answer: answers[key] })),
+      }, {
         headers: { Authorization: `Bearer ${token}` },
       });
       alert('Submitted!');
+      window.history.back(); // Navigate back to dashboard or form list
     } catch (err) {
-      alert('Submission failed');
+      alert('Submission failed: ' + (err as any)?.response?.data?.error || 'Unknown error');
     }
   };
 

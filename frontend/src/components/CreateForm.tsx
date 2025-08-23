@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { createForm } from '../redux/reducers/formSlice'; // ✅ import from slice
+import { createForm } from '../redux/reducers/formSlice';
+import { FaPlus, FaTrash } from 'react-icons/fa';
 
 const CreateForm: React.FC = () => {
   const [title, setTitle] = useState('');
-  const [questions, setQuestions] = useState<{ type: string; text: string; options: string[] }[]>([{ type: 'text', text: '', options: [] }]);
+  const [questions, setQuestions] = useState<{ type: string; text: string; options: string[] }[]>([
+    { type: 'text', text: '', options: [] }
+  ]);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { token } = useSelector((state: any) => state.auth);
@@ -15,19 +18,33 @@ const CreateForm: React.FC = () => {
     if (questions.length < 5) setQuestions([...questions, { type: 'text', text: '', options: [] }]);
   };
 
-  const updateQuestion = (index: number, field: keyof { type: string; text: string; options: string[] }, value: string) => {
+  const removeQuestion = (index: number) => {
+    setQuestions(questions.filter((_, i) => i !== index));
+  };
+
+  const updateQuestion = (
+    index: number,
+    field: keyof { type: string; text: string; options: string[] },
+    value: string
+  ) => {
     const newQuestions = [...questions];
-if (field === "options") {
-  newQuestions[index][field] = value.split(","); // convert to string[]
-} else {
-  newQuestions[index][field] = value; // normal string
-}
+    if (field === 'options') {
+      newQuestions[index][field] = value.split(',');
+    } else {
+      newQuestions[index][field] = value;
+    }
     setQuestions(newQuestions);
   };
 
   const addOption = (index: number) => {
     const newQuestions = [...questions];
     newQuestions[index].options.push('');
+    setQuestions(newQuestions);
+  };
+
+  const removeOption = (qIndex: number, oIndex: number) => {
+    const newQuestions = [...questions];
+    newQuestions[qIndex].options.splice(oIndex, 1);
     setQuestions(newQuestions);
   };
 
@@ -49,83 +66,101 @@ if (field === "options") {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 p-6">
-      <div className="max-w-2xl mx-auto">
-        <h2 className="text-3xl font-bold text-gray-800 mb-6">Create Form</h2>
-        <form onSubmit={handleSubmit} className="bg-white p-6 rounded-lg shadow-lg space-y-6">
+    <div className="min-h-screen bg-gradient-to-b from-gray-100 to-gray-200 p-6">
+      <div className="max-w-3xl mx-auto">
+        <h2 className="text-4xl font-bold text-gray-900 mb-8 text-center drop-shadow-md">Create Form</h2>
+
+        <form onSubmit={handleSubmit} className="bg-white p-8 rounded-2xl shadow-xl space-y-6">
           <input
             type="text"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            placeholder="Title"
+            placeholder="Form Title"
             required
-            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full p-4 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-sm"
           />
 
           {questions.map((q, i) => (
-            <div key={i} className="space-y-4">
-              <div className="flex space-x-4">
+            <div key={i} className="bg-gray-50 p-6 rounded-xl shadow-inner space-y-4 relative">
+              <button
+                type="button"
+                onClick={() => removeQuestion(i)}
+                className="absolute top-4 right-4 text-red-500 hover:text-red-700"
+              >
+                <FaTrash />
+              </button>
+
+              <div className="flex flex-col md:flex-row gap-4">
                 <select
                   value={q.type}
                   onChange={(e) => updateQuestion(i, 'type', e.target.value)}
-                  className="w-1/3 p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full md:w-1/3 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
                   <option value="text">Text</option>
                   <option value="multiple-choice">Multiple Choice</option>
                 </select>
+
                 <input
                   type="text"
                   value={q.text}
                   onChange={(e) => updateQuestion(i, 'text', e.target.value)}
                   placeholder="Question Text"
                   required
-                  className="w-2/3 p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full md:w-2/3 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>
 
               {q.type === 'multiple-choice' && (
                 <div className="pl-4 space-y-2">
                   {q.options.map((opt, j) => (
-                    <input
-                      key={j}
-                      type="text"
-                      value={opt}
-                      onChange={(e) => updateOption(i, j, e.target.value)}
-                      placeholder={`Option ${j + 1}`}
-                      required
-                      className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    />
+                    <div key={j} className="flex gap-2 items-center">
+                      <input
+                        type="text"
+                        value={opt}
+                        onChange={(e) => updateOption(i, j, e.target.value)}
+                        placeholder={`Option ${j + 1}`}
+                        required
+                        className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => removeOption(i, j)}
+                        className="text-red-500 hover:text-red-700"
+                      >
+                        <FaTrash />
+                      </button>
+                    </div>
                   ))}
                   <button
                     type="button"
                     onClick={() => addOption(i)}
-                    className="bg-gray-200 text-gray-700 px-3 py-1 rounded hover:bg-gray-300 transition duration-300"
+                    className="flex items-center gap-2 bg-gray-200 text-gray-700 px-3 py-1 rounded hover:bg-gray-300 transition duration-300"
                   >
-                    Add Option
+                    <FaPlus /> Add Option
                   </button>
                 </div>
               )}
             </div>
           ))}
 
-          <div className="flex space-x-4">
+          <div className="flex flex-col md:flex-row gap-4 justify-between">
             <button
               type="button"
               onClick={addQuestion}
               disabled={questions.length >= 5}
-              className="bg-gray-200 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-300 transition duration-300 disabled:opacity-50"
+              className="flex items-center gap-2 bg-gray-200 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-300 transition duration-300 disabled:opacity-50"
             >
-              Add Question
+              <FaPlus /> Add Question
             </button>
             <button
               type="submit"
-              className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition duration-300"
+              className="bg-blue-600 text-white px-6 py-3 rounded-xl hover:bg-blue-700 transition duration-300 shadow-lg"
             >
-              {loading ? 'Creating...' : 'Create'}
+              {loading ? 'Creating...' : 'Create Form'}
             </button>
           </div>
 
-          {error && <p className="text-red-500">{error}</p>}
+          {error && <p className="text-red-500 text-center">{error}</p>}
         </form>
       </div>
     </div>

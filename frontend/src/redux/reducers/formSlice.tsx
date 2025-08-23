@@ -42,7 +42,7 @@ export const fetchForms = createAsyncThunk(
       const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/forms`, {
         headers: { Authorization: `Bearer ${token}` },
       });
-      return res.data;
+       return res.data;
     } catch (err: any) {
       return rejectWithValue(err.response?.data?.message || 'Fetching forms failed');
     }
@@ -54,28 +54,40 @@ const formSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    // Create form
+    // Create Form
     builder.addCase(createForm.pending, (state) => {
       state.loading = true;
       state.error = null;
     });
     builder.addCase(createForm.fulfilled, (state, action) => {
       state.loading = false;
-      state.forms.push(action.payload); // add created form
+
+      // ✅ Ensure state.forms is always an array
+      if (!Array.isArray(state.forms)) {
+        state.forms = [];
+      }
+
+      state.forms.push(action.payload);
     });
     builder.addCase(createForm.rejected, (state, action) => {
       state.loading = false;
       state.error = action.payload as string;
     });
 
-    // Fetch forms
+    // Fetch Forms
     builder.addCase(fetchForms.pending, (state) => {
       state.loading = true;
       state.error = null;
     });
     builder.addCase(fetchForms.fulfilled, (state, action) => {
       state.loading = false;
-      state.forms = action.payload;
+
+      // ✅ Normalize payload to array
+      state.forms = Array.isArray(action.payload)
+        ? action.payload
+        : action.payload
+        ? [action.payload]
+        : [];
     });
     builder.addCase(fetchForms.rejected, (state, action) => {
       state.loading = false;
