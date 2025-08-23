@@ -4,6 +4,7 @@ import { useDispatch } from "react-redux";
 import { register } from "../redux/reducers/authSlice";
 import {  toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { Link } from "react-router-dom";
 
 const Register: React.FC = () => {
   const [name, setName] = useState(""); // 👈 added name
@@ -112,9 +113,10 @@ const Register: React.FC = () => {
         </form>
          <p className="text-center mt-4 text-gray-600">
           Already have an account?{' '}
-          <a href="/login" className="text-blue-600 hover:underline">
-            Login
-          </a>
+          
+<Link to="/" className="text-blue-600 hover:underline">
+  Login
+</Link>
         </p>
       </div>
      </div>
