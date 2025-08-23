@@ -28,7 +28,7 @@ const Register: React.FC = () => {
       });
 
       setTimeout(() => {
-        navigate("/login");
+        navigate("/");
       }, 3000);
     } catch (err: any) {
       toast.error(err || "⚠️ Something went wrong. Please try again.", {
@@ -147,7 +147,7 @@ const Register: React.FC = () => {
 
         <p className="text-center mt-4 text-gray-600">
           Already have an account?{" "}
-          <Link to="/login" className="text-blue-600 hover:underline">
+          <Link to="/" className="text-blue-600 hover:underline">
             Login
           </Link>
         </p>

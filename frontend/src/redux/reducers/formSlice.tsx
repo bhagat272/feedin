@@ -42,6 +42,7 @@ export const fetchForms = createAsyncThunk(
       const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/forms`, {
         headers: { Authorization: `Bearer ${token}` },
       });
+      console.log("API response data:", res.data); // Debug log
        return res.data;
     } catch (err: any) {
       return rejectWithValue(err.response?.data?.message || 'Fetching forms failed');

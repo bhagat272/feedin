@@ -62,6 +62,7 @@ const authSlice = createSlice({
       state.user = null;
       state.token = null;
       localStorage.removeItem('token');
+      toast.info('🔒 Logged out successfully', { position: 'top-right' });
     },
   },
   extraReducers: (builder) => {

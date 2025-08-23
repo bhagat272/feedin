@@ -82,7 +82,7 @@ const FormSubmission: React.FC = () => {
             type="submit"
             className="w-full bg-green-600 text-white p-3 rounded-lg hover:bg-green-700 transition duration-300"
           >
-            Submit
+            Submit Feedback
           </button>
         </form>
       </div>

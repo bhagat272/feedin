@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { createForm } from '../redux/reducers/formSlice';
 import { FaPlus, FaTrash } from 'react-icons/fa';
+import { toast } from 'react-toastify';
 
 const CreateForm: React.FC = () => {
   const [title, setTitle] = useState('');
@@ -62,13 +63,14 @@ const CreateForm: React.FC = () => {
     const result = await dispatch<any>(createForm({ title, questions, token }));
     if (result.meta.requestStatus === 'fulfilled') {
       navigate('/dashboard');
+      toast.success('Feedback Form created successfully! ✅', { position: 'top-right' });
     }
   };
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-100 to-gray-200 p-6">
       <div className="max-w-3xl mx-auto">
-        <h2 className="text-4xl font-bold text-gray-900 mb-8 text-center drop-shadow-md">Create Form</h2>
+        <h2 className="text-4xl font-bold text-gray-900 mb-8 text-center drop-shadow-md">Create Feedback Form</h2>
 
         <form onSubmit={handleSubmit} className="bg-white p-8 rounded-2xl shadow-xl space-y-6">
           <input
@@ -85,7 +87,7 @@ const CreateForm: React.FC = () => {
               <button
                 type="button"
                 onClick={() => removeQuestion(i)}
-                className="absolute top-4 right-4 text-red-500 hover:text-red-700"
+className="absolute top-1 right-4 p-2  shadow bg-white text-red-500 hover:text-red-700 hover:shadow-lg transition"
               >
                 <FaTrash />
               </button>
