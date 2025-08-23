@@ -7,6 +7,6 @@ const responseController = require('../controllers/responseController');
 
 router.post('/:id', responseController.submitResponse);
 
-router.get('/:formId', authenticateToken, responseController.getResponsesByForm);
+router.get('/:formId', responseController.getResponsesByForm);
 
 module.exports = router;

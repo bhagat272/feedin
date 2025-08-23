@@ -27,21 +27,20 @@ exports.submitResponse = async (req, res) => {
     res.status(400).json({ error: err.message });
   }
 };
+
+
 exports.getResponsesByForm = async (req, res) => {
   try {
     const { formId } = req.params;
-
     const form = await Form.findById(formId);
-    if (!form) return res.status(404).json({ error: "Form not found" });
 
-    const responses = await Response.find({ form: formId }).populate(
-      "answers.questionId",
-      "text"
-    );
+    if (!form) {
+      return res.status(403).json({ error: 'Unauthorized' });
+    }
 
+    const responses = await Response.find({ form: formId }); // no populate needed
     res.json(responses);
   } catch (err) {
-    console.error("Error fetching responses:", err);
     res.status(500).json({ error: err.message });
   }
 };
