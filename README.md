@@ -52,7 +52,12 @@ npm install
 4. Start the backend server:
 
 ```bash
-npm start
+npm start 
+```
+or start the server by nodemon
+
+```bash
+npm run dev
 ```
 
 The backend runs on **port 5002**.
@@ -75,7 +80,7 @@ npm install
 4. Start the frontend:
 
 ```bash
-npm start
+npm run dev
 ```
 
 The frontend runs on **port 3000**.
