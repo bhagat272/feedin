@@ -1,13 +1,13 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { register } from "../redux/reducers/authSlice";
-import {  toast } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { Link } from "react-router-dom";
+import logo from "../assets/banner.png"; // ✅ same logo as login
 
 const Register: React.FC = () => {
-  const [name, setName] = useState(""); // 👈 added name
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -22,7 +22,7 @@ const Register: React.FC = () => {
         register({ name, email, password })
       ).unwrap();
 
-      toast.success(response?.message || "Registration successful!", {
+      toast.success(response?.message || "✅ Registration successful!", {
         position: "top-right",
         autoClose: 3000,
       });
@@ -31,7 +31,7 @@ const Register: React.FC = () => {
         navigate("/login");
       }, 3000);
     } catch (err: any) {
-      toast.error(err || "Something went wrong. Please try again.", {
+      toast.error(err || "⚠️ Something went wrong. Please try again.", {
         position: "top-right",
         autoClose: 4000,
       });
@@ -42,10 +42,19 @@ const Register: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gray-100 flex items-center justify-center">
-      <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
-        <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">
-          Admin Register
-        </h2>
+      <div className="bg-white p-8 rounded-2xl shadow-xl w-full max-w-md">
+        {/* ✅ Logo above title (same as Login page) */}
+        <div className="flex flex-col items-center mb-6">
+          <img
+            src={logo}
+            alt="App Logo"
+            className="w-52 h-auto mb-2 hover:scale-105 transition-transform duration-300 ease-in-out"
+          />
+          <h2 className="text-2xl font-bold text-gray-800">
+            Admin Register
+          </h2>
+        </div>
+
         <form onSubmit={handleSubmit} className="space-y-4">
           <input
             type="text"
@@ -73,6 +82,7 @@ const Register: React.FC = () => {
             className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             autoComplete="new-password"
           />
+
           <button
             type="submit"
             disabled={loading}
@@ -111,15 +121,15 @@ const Register: React.FC = () => {
             )}
           </button>
         </form>
-         <p className="text-center mt-4 text-gray-600">
-          Already have an account?{' '}
-          
-<Link to="/" className="text-blue-600 hover:underline">
-  Login
-</Link>
+
+        <p className="text-center mt-4 text-gray-600">
+          Already have an account?{" "}
+          <Link to="/login" className="text-blue-600 hover:underline">
+            Login
+          </Link>
         </p>
       </div>
-     </div>
+    </div>
   );
 };
 
