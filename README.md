@@ -118,8 +118,8 @@ The frontend runs on **port 3000 or other free port**.
 
 ## **Access**
 
-* Admin dashboard: `http://localhost:3000`
-* Public form submission: `http://localhost:3000/form/:formId`
+* Admin dashboard: `http://localhost:anyPortNo`
+* Public form submission: `http://localhost:anyPortNo/form/:formId`
 
 ---
  
