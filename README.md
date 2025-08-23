@@ -83,7 +83,7 @@ npm install
 npm run dev
 ```
 
-The frontend runs on **port 3000**.
+The frontend runs on **port 3000 or other free port**.
 
 ---
 
