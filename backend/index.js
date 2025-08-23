@@ -12,7 +12,7 @@ const PORT = process.env.PORT || 5002;
 app.use(cors({
   origin: [
     'http://localhost:5173',
-    'https://feedin-eo3k0yd7g-bhagat272s-projects.vercel.app'
+    'https://feedin-kappa.vercel.app'
   ],
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
