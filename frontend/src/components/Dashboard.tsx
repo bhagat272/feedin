@@ -20,7 +20,7 @@ const Dashboard: React.FC = () => {
   useEffect(() => {
     if (!token) {
       navigate("/");
-      
+
       return;
     }
     dispatch(fetchForms(token));
@@ -30,7 +30,7 @@ const Dashboard: React.FC = () => {
       .writeText(text)
       .then(() => {
         toast.success("URL copied to clipboard!", { position: "top-right" });
-       })
+      })
       .catch((err) => console.error("Failed to copy:", err));
   };
   return (
@@ -95,6 +95,15 @@ const Dashboard: React.FC = () => {
                     <FaCopy className="ml-1 text-blue-600" />
                   </span>
                 </p>
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation(); // prevent parent li navigation
+                    navigate(`/response/${form._id}`);
+                  }}
+                  className="mt-4 w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition"
+                >
+                  View Responses
+                </button>
               </li>
             ))}
         </ul>

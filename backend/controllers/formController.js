@@ -37,26 +37,4 @@ exports.getPublicForm = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
-
-exports.submitResponse = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const { answers } = req.body;
-    if (!req.userId) return res.status(401).json({ error: 'User not authenticated' });
-
-    const form = await Form.findById(id);
-    if (!form) return res.status(404).json({ error: 'Form not found' });
-
-    const response = new Response({
-      form: id,
-      user: req.userId,
-      answers,
-      submittedAt: new Date(),
-    });
-    await response.save();
-
-    res.status(201).json({ message: 'Response submitted successfully' });
-  } catch (err) {
-    res.status(400).json({ error: err.message });
-  }
-};
+ 

@@ -10,7 +10,6 @@ router.post('/', authenticateToken, formController.createForm);
 router.get('/', authenticateToken, formController.getForms);
 // 📌 Get a public form by ID
 router.get('/:id', formController.getPublicForm);
-// 📌 Submit a response to a form
-router.post('/:id/responses', formController.submitResponse);
+
 
 module.exports = router;
