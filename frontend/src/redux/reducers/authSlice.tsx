@@ -8,10 +8,11 @@ interface AuthState {
   loading: boolean;
   error: string | null;
 }
+const tokenFromStorage = localStorage.getItem('token');
 
 const initialState: AuthState = {
   user: null,
-  token: null,
+  token:tokenFromStorage,
   loading: false,
   error: null,
 };
