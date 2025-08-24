@@ -28,7 +28,7 @@ const Register: React.FC = () => {
       });
 
       setTimeout(() => {
-        navigate("/");
+        navigate("/dashboard");
       }, 3000);
     } catch (err: any) {
       toast.error(err || "⚠️ Something went wrong. Please try again.", {
