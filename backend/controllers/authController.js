@@ -26,8 +26,23 @@ exports.signup = async (req, res) => {
       role: "admin",
     });
 
-    return res.status(201).json({ message: "Admin created successfully", user });
-  } catch (err) {
+ // ✅ Generate token (same as login)
+    const token = jwt.sign(
+      { userId: user._id, role: user.role },
+      process.env.JWT_SECRET,
+      { expiresIn: "1h" }
+    );
+
+    return res.status(201).json({
+      message: "Admin created successfully ✅",
+      token,
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+      },
+    });  } catch (err) {
     console.error("❌ Error during signup:", err);
     return res.status(500).json({ message: "Failed to create admin" });
   }

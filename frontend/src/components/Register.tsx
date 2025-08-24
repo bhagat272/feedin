@@ -27,10 +27,8 @@ const Register: React.FC = () => {
         autoClose: 3000,
       });
 
-      setTimeout(() => {
-        navigate("/dashboard");
-      }, 3000);
-    } catch (err: any) {
+         navigate("/dashboard");
+     } catch (err: any) {
       toast.error(err || "⚠️ Something went wrong. Please try again.", {
         position: "top-right",
         autoClose: 4000,

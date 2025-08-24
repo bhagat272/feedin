@@ -1,6 +1,6 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
-import { toast } from 'react-toastify';
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 interface AuthState {
   user: any | null;
@@ -8,34 +8,43 @@ interface AuthState {
   loading: boolean;
   error: string | null;
 }
-const tokenFromStorage = localStorage.getItem('token');
+const tokenFromStorage = localStorage.getItem("token");
 
 const initialState: AuthState = {
   user: null,
-  token:tokenFromStorage,
+  token: tokenFromStorage,
   loading: false,
   error: null,
 };
 
 // Register
 export const register = createAsyncThunk(
-  'auth/register',
+  "auth/register",
   async (
-    { name, email, password }: { name: string; email: string; password: string },
+    {
+      name,
+      email,
+      password,
+    }: { name: string; email: string; password: string },
     { rejectWithValue }
   ) => {
     try {
-      const res = await axios.post(`${import.meta.env.VITE_API_URL}/api/auth/register`, { name, email, password });
+      const res = await axios.post(
+        `${import.meta.env.VITE_API_URL}/api/auth/register`,
+        { name, email, password }
+      );
       return res.data;
     } catch (err: any) {
-      return rejectWithValue(err.response?.data?.message || 'Registration failed');
+      return rejectWithValue(
+        err.response?.data?.message || "Registration failed"
+      );
     }
   }
 );
 
 // Login
 export const login = createAsyncThunk(
-  'auth/login',
+  "auth/login",
   async (
     { email, password }: { email: string; password: string },
     { rejectWithValue }
@@ -54,16 +63,15 @@ export const login = createAsyncThunk(
   }
 );
 
-
 const authSlice = createSlice({
-  name: 'auth',
+  name: "auth",
   initialState,
   reducers: {
     logout: (state) => {
       state.user = null;
       state.token = null;
-      localStorage.removeItem('token');
-      toast.info('🔒 Logged out successfully', { position: 'top-right' });
+      localStorage.removeItem("token");
+      toast.info("🔒 Logged out successfully", { position: "top-right" });
     },
   },
   extraReducers: (builder) => {
@@ -72,9 +80,11 @@ const authSlice = createSlice({
       state.loading = true;
       state.error = null;
     });
-    builder.addCase(register.fulfilled, (state) => {
+    builder.addCase(register.fulfilled, (state, action) => {
       state.loading = false;
-      // No user or token from register, handle as needed
+      state.token = action.payload.token; // ✅ Save token
+      state.user = action.payload.user;
+      localStorage.setItem("token", action.payload.token);
     });
     builder.addCase(register.rejected, (state, action) => {
       state.loading = false;
@@ -89,7 +99,7 @@ const authSlice = createSlice({
     builder.addCase(login.fulfilled, (state, action) => {
       state.loading = false;
       state.token = action.payload.token; // Update to match { token }
-      localStorage.setItem('token', action.payload.token);
+      localStorage.setItem("token", action.payload.token);
     });
     builder.addCase(login.rejected, (state, action) => {
       state.loading = false;
