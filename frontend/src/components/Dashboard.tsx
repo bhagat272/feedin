@@ -29,7 +29,14 @@ const Dashboard: React.FC = () => {
     navigator.clipboard
       .writeText(text)
       .then(() => {
-        toast.success("URL copied to clipboard!", { position: "top-right" });
+        toast.success("URL copied to clipboard!", {
+          position: "top-right",
+          hideProgressBar: true,
+          autoClose: 2000, // closes after 2s (you can adjust)
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        });
       })
       .catch((err) => console.error("Failed to copy:", err));
   };
